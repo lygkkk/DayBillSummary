@@ -1,6 +1,7 @@
 ﻿using DayBillSummary.DI;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.IO;
 
 namespace DayBillSummary.App
 {
@@ -10,6 +11,13 @@ namespace DayBillSummary.App
         static void Main(string[] args)
         {
             string dataBase = $@"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}\单据审核中心.xls";
+
+            while (!File.Exists(dataBase))
+            {
+                Console.WriteLine(@"单据审核中心文件不存在。\r\n请导出后按任意键继续。");
+                Console.ReadKey();
+            }
+
             IServiceCollection serviceCollection = new ServiceCollection();
             serviceCollection.AddProvider(dataBase, "单据审核中心");
 

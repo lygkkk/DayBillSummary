@@ -8,7 +8,7 @@ namespace DayBillSummary.FileOperational
     {
         public static string ReadJsconfig(string filePath)
         {
-            return File.ReadAllText(filePath);
+            return File.ReadAllText(filePath, Encoding.Default);
             //string str = "";
             //StreamReader streamReader = new StreamReader(filePath, Encoding.Default);
             //string line;

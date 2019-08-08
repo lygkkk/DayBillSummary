@@ -22,8 +22,9 @@ namespace DayBillSummary.DI
         private string _deskTopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
         private string _currentDirectory = System.Environment.CurrentDirectory;
 
-        public delegate void SenderMessage(string message);
-        public event SenderMessage MessageEvent;
+        //public delegate void SenderMessage(string message);
+        //public event SenderMessage MessageEvent;
+        public event Action<string> MessageEvent; 
         public InjectionPoint(IOrderInfoService orderInfoService, ICompanyInfoService companyInfoService, INpoiService npoiService)
         {
             _orderInfoService = orderInfoService;
@@ -115,7 +116,11 @@ namespace DayBillSummary.DI
                     WriteExce(otherOrderInfos, key.Key);
                 }
             }
-            MessageEvent?.Invoke("生成汇总单。");
+
+            MessageEvent?.Invoke("生成汇总单到桌面。");
+
+            if(File.Exists(_deskTopPath + @"\每日汇总单.xlsx")) File.Delete(_deskTopPath + @"\每日汇总单.xlsx");
+
             using (FileStream fileStream = File.OpenWrite(_deskTopPath + @"\每日汇总单.xlsx"))
             {
                 workbook.Write(fileStream);
@@ -126,7 +131,7 @@ namespace DayBillSummary.DI
 
         private void WriteExce<T>(IEnumerable<T> source, string sheetName) where T: class, new()
         {
-            MessageEvent?.Invoke("写入Excel。");
+            MessageEvent?.Invoke($"准备写入{sheetName}。");
             if (_exceLocations == null)
             {
                 _exceLocations = new List<Location<int>>();
