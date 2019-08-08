@@ -22,8 +22,6 @@ namespace DayBillSummary.DI
         private string _deskTopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
         private string _currentDirectory = System.Environment.CurrentDirectory;
 
-        //public delegate void SenderMessage(string message);
-        //public event SenderMessage MessageEvent;
         public event Action<string> MessageEvent; 
         public InjectionPoint(IOrderInfoService orderInfoService, ICompanyInfoService companyInfoService, INpoiService npoiService)
         {
